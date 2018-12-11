@@ -1,4 +1,4 @@
-function [ act_out ] = transfer( act_in, kind)
+function [ output_a, dydz ] = transfer( output_z, kind)
 %UNTITLED3 Summary of this function goes here
 %   Detailed explanation goes here
     if nargin < 2
@@ -6,11 +6,14 @@ function [ act_out ] = transfer( act_in, kind)
     end
     switch kind
         case 'sigmoid'
-            act_out = 1 ./ (1 + exp(-act_in));
+            output_a = 1 ./ (1 + exp(-output_z));
+            dydz = exp(-output_z) ./ ((1+exp(-output_z)).^2);
         case 'softmax'
-            act_out = softmax(1 ./ (1 + exp(-act_in)));
+            output_a = softmax(1 ./ (1 + exp(-output_z)));
+            % ??? derivative ???
         case 'linear'
-            act_out = act_in;
+            output_a = output_z;
+            dydz = ones(size(output_z));
     end
 end
 
